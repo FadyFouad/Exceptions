@@ -20,13 +20,13 @@ public class EXExample {
 
     private static int getInt() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter int");
+        System.out.println("Enter number");
         while(true){
             try{
                 return scanner.nextInt();
             }catch(InputMismatchException e){
-                scanner.nextInt();
-                System.out.println(e.getMessage());
+                scanner.nextLine();
+                System.out.println("Exception : "+e.getMessage());
                 System.out.println("Enter Number 0:9");
             }
         }
