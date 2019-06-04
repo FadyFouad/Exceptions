@@ -1,5 +1,6 @@
 package com.etaTech;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /****************************************************
@@ -20,6 +21,14 @@ public class EXExample {
     private static int getInt() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter int");
-        return scanner.nextInt();
+        while(true){
+            try{
+                return scanner.nextInt();
+            }catch(InputMismatchException e){
+                scanner.nextInt();
+                System.out.println(e.getMessage());
+                System.out.println("Enter Number 0:9");
+            }
+        }
     }
 }
