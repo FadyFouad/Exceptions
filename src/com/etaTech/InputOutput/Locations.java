@@ -1,5 +1,7 @@
 package com.etaTech.InputOutput;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +12,20 @@ import java.util.Set;
  ***************************************************/
 public class Locations implements Map<Integer,Location> {
     private static Map<Integer,Location>locationMap = new HashMap<>();
+
+    public static void main(String[] args) {
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter("Location.txt");
+            for (Location location :
+                    locationMap.values()) {
+                fileWriter.write("Location ID : "+location.getLocationID()+ " , Location Desc : "+location.getDesc()+"\n");
+            }
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     static {
