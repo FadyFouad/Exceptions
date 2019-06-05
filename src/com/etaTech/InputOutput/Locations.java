@@ -21,9 +21,35 @@ public class Locations implements Map<Integer,Location> {
                     locationMap.values()) {
                 fileWriter.write("Location ID : "+location.getLocationID()+ " , Location Desc : "+location.getDesc()+"\n");
             }
-            fileWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                fileWriter.close();
+                System.out.println("In Finally Block");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        FileWriter IOExceptionEX = null;
+        try {
+            IOExceptionEX = new FileWriter("fileExists.txt");
+            for (Location location :
+                    locationMap.values()) {
+                IOExceptionEX.write("Location ID : "+location.getLocationID()+ " , Location Desc : "+location.getDesc()+"\n");
+            }
+            IOExceptionEX.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }finally {
+            try {
+                fileWriter.close();
+                System.out.println("In Finally Block Exception");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
