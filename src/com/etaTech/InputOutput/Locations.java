@@ -10,8 +10,8 @@ import java.util.Set;
 /****************************************************
  *** Created by Fady Fouad on 6/5/2019 at 12:32.***
  ***************************************************/
-public class Locations implements Map<Integer,Location> {
-    private static Map<Integer,Location>locationMap = new HashMap<>();
+public class Locations implements Map<Integer, Location> {
+    private static Map<Integer, Location> locationMap = new HashMap<>();
 
     public static void main(String[] args) {
         FileWriter fileWriter = null;
@@ -19,14 +19,16 @@ public class Locations implements Map<Integer,Location> {
             fileWriter = new FileWriter("Location.txt");
             for (Location location :
                     locationMap.values()) {
-                fileWriter.write("Location ID : "+location.getLocationID()+ " , Location Desc : "+location.getDesc()+"\n");
+                fileWriter.write("Location ID : " + location.getLocationID() + " , Location Desc : " + location.getDesc() + "\n");
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
-                fileWriter.close();
-                System.out.println("In Finally Block");
+                if (fileWriter != null) {
+                    fileWriter.close();
+                    System.out.println("Closing file fileWriter");
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -37,16 +39,18 @@ public class Locations implements Map<Integer,Location> {
             IOExceptionEX = new FileWriter("fileExists.txt");
             for (Location location :
                     locationMap.values()) {
-                IOExceptionEX.write("Location ID : "+location.getLocationID()+ " , Location Desc : "+location.getDesc()+"\n");
+                IOExceptionEX.write("Location ID : " + location.getLocationID() + " , Location Desc : " + location.getDesc() + "\n");
             }
             IOExceptionEX.close();
         } catch (IOException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
-                fileWriter.close();
-                System.out.println("In Finally Block Exception");
+                if (IOExceptionEX != null) {
+                    IOExceptionEX.close();
+                    System.out.println("IOExceptionEX");
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -55,29 +59,29 @@ public class Locations implements Map<Integer,Location> {
 
 
     static {
-        Map<String ,Integer>tempExit = new HashMap<>();
-        locationMap.put(0, new Location(0, "Out Of Game",tempExit));
+        Map<String, Integer> tempExit = new HashMap<>();
+        locationMap.put(0, new Location(0, "Out Of Game", tempExit));
         tempExit = new HashMap<>();
         tempExit.put("W", 2);
         tempExit.put("E", 3);
         tempExit.put("S", 4);
         tempExit.put("N", 5);
-        locationMap.put(1, new Location(1, "room 1",tempExit));
+        locationMap.put(1, new Location(1, "room 1", tempExit));
         tempExit = new HashMap<>();
         tempExit.put("N", 5);
-        locationMap.put(2, new Location(2, "room 2",tempExit));
+        locationMap.put(2, new Location(2, "room 2", tempExit));
         tempExit = new HashMap<>();
         tempExit.put("W", 1);
-        locationMap.put(3, new Location(3, "room 3",tempExit));
+        locationMap.put(3, new Location(3, "room 3", tempExit));
         tempExit = new HashMap<>();
         tempExit.put("N", 1);
         tempExit.put("W", 2);
-        locationMap.put(4, new Location(4, "room 4",tempExit));
-        locationMap.put(5, new Location(5, "room 4+",tempExit));
+        locationMap.put(4, new Location(4, "room 4", tempExit));
+        locationMap.put(5, new Location(5, "room 4+", tempExit));
         tempExit = new HashMap<>();
         tempExit.put("S", 1);
         tempExit.put("W", 2);
-        locationMap.put(5, new Location(5, "room 5",tempExit));
+        locationMap.put(5, new Location(5, "room 5", tempExit));
     }
 
     @Override
@@ -107,7 +111,7 @@ public class Locations implements Map<Integer,Location> {
 
     @Override
     public Location put(Integer key, Location value) {
-        return locationMap.put(key,value);
+        return locationMap.put(key, value);
     }
 
     @Override
@@ -117,7 +121,6 @@ public class Locations implements Map<Integer,Location> {
 
     @Override
     public void putAll(Map<? extends Integer, ? extends Location> m) {
-
 
 
     }
