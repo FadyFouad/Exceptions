@@ -1,0 +1,6 @@
+Location ID : 0 , Location Desc : Out Of Game
+Location ID : 1 , Location Desc : room 1
+Location ID : 2 , Location Desc : room 2
+Location ID : 3 , Location Desc : room 3
+Location ID : 4 , Location Desc : room 4
+Location ID : 5 , Location Desc : room 5
