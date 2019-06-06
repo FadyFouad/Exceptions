@@ -35,9 +35,4 @@ public class Location {
     protected void addExit(String dir, int destenation) {
         exits.put(dir,destenation);
     }
-
-//    public void addExit(String exitDescrption , int location){
-//        exits.put(exitDescrption,location);
-//    }
-
 }
