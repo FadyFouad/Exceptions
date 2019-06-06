@@ -33,7 +33,7 @@ public class Locations implements Map<Integer, Location> {
         //TODO Read Fromm File
         Scanner scanner = null;
         try{
-            scanner = new Scanner(new FileReader("Location.txt"));
+            scanner = new Scanner(new FileReader("locations_big.txt"));
             scanner.useDelimiter(",");
             while (scanner.hasNextLine()){
                 int loc = scanner.nextInt();
@@ -53,7 +53,7 @@ public class Locations implements Map<Integer, Location> {
         }
 
         try{
-            scanner = new Scanner(new BufferedReader(new FileReader("Directions.txt")));
+            scanner = new Scanner(new BufferedReader(new FileReader("directions_big.txt")));
             scanner.useDelimiter(",");
             while (scanner.hasNextLine()){
                 int loc = scanner.nextInt();
