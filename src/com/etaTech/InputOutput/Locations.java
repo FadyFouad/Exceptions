@@ -19,6 +19,7 @@ public class Locations implements Map<Integer, Location> {
                     locationMap.values())
             {
                 fileWriter.write(location.getLocationID()+","+ location.getDesc() + "\n");
+//                throw  new IOException("This is My Exception");
                 for (String dir :
                         location.getExits().keySet()) {
                     fileDirections.write(location.getLocationID()+","+dir+","+ location.getExits().get(dir)+"\n");
@@ -69,7 +70,7 @@ public class Locations implements Map<Integer, Location> {
         }finally {
             scanner.close();
         }
-    }
+}
 
     @Override
     public int size() {
