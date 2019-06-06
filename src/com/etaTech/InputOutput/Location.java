@@ -32,6 +32,10 @@ public class Location {
         this.exits.put("Q", 0);
     }
 
+    protected void addExit(String dir, int destenation) {
+        exits.put(dir,destenation);
+    }
+
 //    public void addExit(String exitDescrption , int location){
 //        exits.put(exitDescrption,location);
 //    }

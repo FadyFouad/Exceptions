@@ -1,9 +1,6 @@
 package com.etaTech.InputOutput;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 /****************************************************
@@ -25,7 +22,7 @@ public class Locations implements Map<Integer, Location> {
 //                throw  new IOException("This is My Exception");
                 for (String dir :
                         location.getExits().keySet()) {
-                    fileDirections.write(location.getLocationID()+" : "+dir+" : "+ location.getExits().get(dir)+"\n");
+                    fileDirections.write(location.getLocationID()+","+dir+","+ location.getExits().get(dir)+"\n");
                 }
             }
         }
@@ -78,7 +75,7 @@ public class Locations implements Map<Integer, Location> {
         //TODO Read Fromm File
         Scanner scanner = null;
         try{
-            new Scanner(new FileReader("Location.txt"));
+            scanner = new Scanner(new FileReader("Location.txt"));
             scanner.useDelimiter(",");
             while (scanner.hasNextLine()){
                 int loc = scanner.nextInt();
@@ -95,6 +92,25 @@ public class Locations implements Map<Integer, Location> {
             if (scanner!=null){
                 scanner.close();
             }
+        }
+
+        try{
+            scanner = new Scanner(new BufferedReader(new FileReader("Directions.txt")));
+            scanner.useDelimiter(",");
+            while (scanner.hasNextLine()){
+                int loc = scanner.nextInt();
+                String dir = scanner.next();
+                scanner.skip(scanner.delimiter());
+                String dest =scanner.nextLine();
+                int destenation = Integer.parseInt(dest);
+                System.out.println(loc+","+dir+","+destenation);
+                Location location = locationMap.get(loc);
+                location.addExit(dir,destenation);
+            }
+        }catch (IOException e){
+                e.printStackTrace();
+        }finally {
+            scanner.close();
         }
 
 //        Map<String, Integer> tempExit = new HashMap<>();
