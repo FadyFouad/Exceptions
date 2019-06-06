@@ -14,15 +14,14 @@ public class Locations implements Map<Integer, Location> {
         //TODO JAVA 8 try with resources
         try (FileWriter fileWriter = new FileWriter("Location.txt");
              FileWriter fileDirections = new FileWriter("Directions.txt")) {
-            for(
-            Location location :
-                    locationMap.values())
-            {
-                fileWriter.write(location.getLocationID()+","+ location.getDesc() + "\n");
+            for (
+                    Location location :
+                    locationMap.values()) {
+                fileWriter.write(location.getLocationID() + "," + location.getDesc() + "\n");
 //                throw  new IOException("This is My Exception");
                 for (String dir :
                         location.getExits().keySet()) {
-                    fileDirections.write(location.getLocationID()+","+dir+","+ location.getExits().get(dir)+"\n");
+                    fileDirections.write(location.getLocationID() + "," + dir + "," + location.getExits().get(dir) + "\n");
                 }
             }
         }
@@ -31,46 +30,39 @@ public class Locations implements Map<Integer, Location> {
 
     static {
         //TODO Read Fromm File
-        Scanner scanner = null;
-        try{
-            scanner = new Scanner(new FileReader("locations_big.txt"));
+//        Scanner scanner = null;
+        try (Scanner scanner = new Scanner(new FileReader("locations_big.txt"))) {
+
             scanner.useDelimiter(",");
-            while (scanner.hasNextLine()){
+            while (scanner.hasNextLine()) {
                 int loc = scanner.nextInt();
                 scanner.skip(scanner.delimiter());
                 String desc = scanner.nextLine();
                 System.out.println(desc);
-                Map<String ,Integer>map = new HashMap<>();
-                locationMap.put(loc,new Location(loc,desc,map));
+                Map<String, Integer> map = new HashMap<>();
+                locationMap.put(loc, new Location(loc, desc, map));
             }
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
-        }finally {
-            if (scanner!=null){
-                scanner.close();
-            }
         }
 
-        try{
-            scanner = new Scanner(new BufferedReader(new FileReader("directions_big.txt")));
+        try (Scanner scanner = new Scanner(new BufferedReader(new FileReader("directions_big.txt")))) {
             scanner.useDelimiter(",");
-            while (scanner.hasNextLine()){
+            while (scanner.hasNextLine()) {
                 int loc = scanner.nextInt();
                 String dir = scanner.next();
                 scanner.skip(scanner.delimiter());
-                String dest =scanner.nextLine();
+                String dest = scanner.nextLine();
                 int destenation = Integer.parseInt(dest);
-                System.out.println(loc+","+dir+","+destenation);
+                System.out.println(loc + "," + dir + "," + destenation);
                 Location location = locationMap.get(loc);
-                location.addExit(dir,destenation);
+                location.addExit(dir, destenation);
             }
-        }catch (IOException e){
-                e.printStackTrace();
-        }finally {
-            scanner.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-}
+    }
 
     @Override
     public int size() {
