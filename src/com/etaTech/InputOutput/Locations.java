@@ -12,13 +12,12 @@ public class Locations implements Map<Integer, Location> {
     public static void main(String[] args) throws IOException {
 
         //TODO JAVA 8 try with resources
-        try (FileWriter fileWriter = new FileWriter("Location.txt");
-             FileWriter fileDirections = new FileWriter("Directions.txt")) {
+        try (BufferedWriter fileWriter =new BufferedWriter(new FileWriter("Location.txt"));
+             BufferedWriter fileDirections =new BufferedWriter(new FileWriter("Directions.txt"))) {
             for (
                     Location location :
                     locationMap.values()) {
                 fileWriter.write(location.getLocationID() + "," + location.getDesc() + "\n");
-//                throw  new IOException("This is My Exception");
                 for (String dir :
                         location.getExits().keySet()) {
                     fileDirections.write(location.getLocationID() + "," + dir + "," + location.getExits().get(dir) + "\n");
@@ -31,7 +30,7 @@ public class Locations implements Map<Integer, Location> {
     static {
         //TODO Read Fromm File
 //        Scanner scanner = null;
-        try (Scanner scanner = new Scanner(new FileReader("locations_big.txt"))) {
+        try (Scanner scanner = new Scanner(new BufferedReader(new FileReader("locations_big.txt")))) {
 
             scanner.useDelimiter(",");
             while (scanner.hasNextLine()) {
@@ -47,13 +46,13 @@ public class Locations implements Map<Integer, Location> {
             System.out.println(e.getMessage());
         }
 
-        try (Scanner scanner = new Scanner(new BufferedReader(new FileReader("directions_big.txt")))) {
-            scanner.useDelimiter(",");
-            while (scanner.hasNextLine()) {
-                int loc = scanner.nextInt();
-                String dir = scanner.next();
-                scanner.skip(scanner.delimiter());
-                String dest = scanner.nextLine();
+        try (BufferedReader scanner = new BufferedReader(new FileReader("directions_big.txt"))) {
+            String input;
+            while ((input = scanner.readLine())!=null) {
+                String[]data = input.split(",");
+                String dest = data[2];
+                int loc = Integer.parseInt(data[0]);
+                String dir = data[1];
                 int destenation = Integer.parseInt(dest);
                 System.out.println(loc + "," + dir + "," + destenation);
                 Location location = locationMap.get(loc);
