@@ -12,12 +12,8 @@ public class Locations implements Map<Integer, Location> {
     public static void main(String[] args) throws IOException {
 
 
-        try (ObjectOutputStream locFile = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream("locations.dat")))) {
-
-            for (Location location :
-                    locationMap.values()) {
-                locFile.writeObject(location);
-            }
+        try (RandomAccessFile randomAccessFile = new RandomAccessFile("locations_rand.dat","rwd")) {
+            randomAccessFile.writeInt(locationMap.size());
         }
     }
 
