@@ -7,122 +7,114 @@ import java.util.*;
  *** Created by Fady Fouad on 6/5/2019 at 12:32.***
  ***************************************************/
 public class Locations implements Map<Integer, Location> {
-    private static Map<Integer, Location> locationMap = new HashMap<>();
+    private static Map<Integer, Location> locations = new LinkedHashMap<>();
 
     public static void main(String[] args) throws IOException {
-
-        //TODO JAVA 8 try with resources
-        try (BufferedWriter fileWriter =new BufferedWriter(new FileWriter("Location.txt"));
-             BufferedWriter fileDirections =new BufferedWriter(new FileWriter("Directions.txt"))) {
-            for (
-                    Location location :
-                    locationMap.values()) {
-                fileWriter.write(location.getLocationID() + "," + location.getDesc() + "\n");
-                for (String dir :
-                        location.getExits().keySet()) {
-                    fileDirections.write(location.getLocationID() + "," + dir + "," + location.getExits().get(dir) + "\n");
+        try (DataOutputStream locFile = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("locations.dat")))) {
+            for (Location location : locations.values()) {
+                locFile.writeInt(location.getLocationID());
+                locFile.writeUTF(location.getDesc());
+                System.out.println("Writing location " + location.getLocationID() + " : " + location.getDesc());
+                System.out.println("Writing " + (location.getExits().size() - 1) + " exits.");
+                locFile.writeInt(location.getExits().size() - 1);
+                for (String direction : location.getExits().keySet()) {
+                    if (!direction.equalsIgnoreCase("Q")) {
+                        System.out.println("\t\t" + direction + "," + location.getExits().get(direction));
+                        locFile.writeUTF(direction);
+                        locFile.writeInt(location.getExits().get(direction));
+                    }
                 }
             }
         }
-    }
 
+    }
 
     static {
-        //TODO Read Fromm File
-//        Scanner scanner = null;
-        try (Scanner scanner = new Scanner(new BufferedReader(new FileReader("locations_big.txt")))) {
+        try(DataInputStream locFile = new DataInputStream(new BufferedInputStream(new FileInputStream("locations.dat")))) {
+            boolean eof = false;
+            while(!eof) {
+                try {
+                    Map<String, Integer> exits = new LinkedHashMap<>();
+                    int locID = locFile.readInt();
+                    String description = locFile.readUTF();
+                    int numExits = locFile.readInt();
+                    System.out.println("Read location " + locID + " : " + description);
+                    System.out.println("Found " + numExits + " exits");
+                    for(int i=0; i<numExits; i++) {
+                        String direction = locFile.readUTF();
+                        int destination = locFile.readInt();
+                        exits.put(direction, destination);
+                        System.out.println("\t\t" + direction + "," + destination);
+                    }
+                    locations.put(locID, new Location(locID, description, exits));
 
-            scanner.useDelimiter(",");
-            while (scanner.hasNextLine()) {
-                int loc = scanner.nextInt();
-                scanner.skip(scanner.delimiter());
-                String desc = scanner.nextLine();
-                System.out.println(desc);
-                Map<String, Integer> map = new HashMap<>();
-                locationMap.put(loc, new Location(loc, desc, map));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
-        }
+                } catch(EOFException e) {
+                    eof = true;
+                }
 
-        try (BufferedReader scanner = new BufferedReader(new FileReader("directions_big.txt"))) {
-            String input;
-            while ((input = scanner.readLine())!=null) {
-                String[]data = input.split(",");
-                String dest = data[2];
-                int loc = Integer.parseInt(data[0]);
-                String dir = data[1];
-                int destenation = Integer.parseInt(dest);
-                System.out.println(loc + "," + dir + "," + destenation);
-                Location location = locationMap.get(loc);
-                location.addExit(dir, destenation);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch(IOException io) {
+            System.out.println("IO Exception");
         }
     }
-
     @Override
     public int size() {
-        return locationMap.size();
+        return locations.size();
     }
 
     @Override
     public boolean isEmpty() {
-        return locationMap.isEmpty();
+        return locations.isEmpty();
     }
 
     @Override
     public boolean containsKey(Object key) {
-        return locationMap.containsKey(key);
+        return locations.containsKey(key);
     }
 
     @Override
     public boolean containsValue(Object value) {
-        return locationMap.containsKey(value);
+        return locations.containsValue(value);
     }
 
     @Override
     public Location get(Object key) {
-        return locationMap.get(key);
+        return locations.get(key);
     }
 
     @Override
     public Location put(Integer key, Location value) {
-        return locationMap.put(key, value);
+        return locations.put(key, value);
     }
 
     @Override
     public Location remove(Object key) {
-        return locationMap.remove(key);
+        return locations.remove(key);
     }
 
     @Override
     public void putAll(Map<? extends Integer, ? extends Location> m) {
 
-
     }
 
     @Override
     public void clear() {
-
-        locationMap.clear();
+        locations.clear();
 
     }
 
     @Override
     public Set<Integer> keySet() {
-        return locationMap.keySet();
+        return locations.keySet();
     }
 
     @Override
     public Collection<Location> values() {
-        return locationMap.values();
+        return locations.values();
     }
 
     @Override
     public Set<Entry<Integer, Location>> entrySet() {
-        return locationMap.entrySet();
+        return locations.entrySet();
     }
 }
