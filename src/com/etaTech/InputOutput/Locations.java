@@ -26,13 +26,12 @@ public class Locations implements Map<Integer, Location> {
                 }
             }
         }
-
     }
 
     static {
-        try(DataInputStream locFile = new DataInputStream(new BufferedInputStream(new FileInputStream("locations.dat")))) {
+        try (DataInputStream locFile = new DataInputStream(new BufferedInputStream(new FileInputStream("locations.dat")))) {
             boolean eof = false;
-            while(!eof) {
+            while (!eof) {
                 try {
                     Map<String, Integer> exits = new LinkedHashMap<>();
                     int locID = locFile.readInt();
@@ -40,7 +39,7 @@ public class Locations implements Map<Integer, Location> {
                     int numExits = locFile.readInt();
                     System.out.println("Read location " + locID + " : " + description);
                     System.out.println("Found " + numExits + " exits");
-                    for(int i=0; i<numExits; i++) {
+                    for (int i = 0; i < numExits; i++) {
                         String direction = locFile.readUTF();
                         int destination = locFile.readInt();
                         exits.put(direction, destination);
@@ -48,15 +47,16 @@ public class Locations implements Map<Integer, Location> {
                     }
                     locations.put(locID, new Location(locID, description, exits));
 
-                } catch(EOFException e) {
+                } catch (EOFException e) {
                     eof = true;
                 }
 
             }
-        } catch(IOException io) {
+        } catch (IOException io) {
             System.out.println("IO Exception");
         }
     }
+
     @Override
     public int size() {
         return locations.size();
